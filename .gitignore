@@ -35,6 +35,6 @@ yarn-error.*
 *.tsbuildinfo
 
 
-# my custom
+# my custom files
 
 .tmp
