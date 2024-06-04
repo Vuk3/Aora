@@ -17,7 +17,6 @@ const GlobalProvider = ({ children }) => {
     getCurrentUser()
       .then((res) => {
         if (res) {
-          console.log(res)
           setIsLogged(true);
           setUser(res);
           // ovo sam ja dodao, jer sam imao problem da je logovan a ostane na sing up
