@@ -1,40 +1,43 @@
-import { View, Text, ScrollView, Image, Alert } from 'react-native'
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { Link } from 'expo-router'
+import { useState } from "react";
+import { Link, router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
 
-import { images } from '../../constants'
+import { images } from "../../constants";
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
-import { signIn } from '../../lib/appwrite'
+import { getCurrentUser, signIn } from "../../lib/appwrite";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const SignIn = () => {
+  const { setUser, setIsLogged } = useGlobalContext();
+  const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
-    email: '',
-    password: ''
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false);
+    email: "",
+    password: "",
+  });
 
   const submit = async () => {
-    if (!form.email || !form.password) {
-      Alert.alert('Error', 'Please fill all the fields')
+    if (form.email === "" || form.password === "") {
+      Alert.alert("Error", "Please fill in all fields");
     }
 
-    setIsSubmitting(true);
+    setSubmitting(true);
+
     try {
-      await signIn(form.email, form.password)
+      await signIn(form.email, form.password);
+      const result = await getCurrentUser();
+      setUser(result);
+      setIsLogged(true);
 
-      //set it to global state
-
-      router.replace('/home')
+      Alert.alert("Success", "User signed in successfully");
+      router.replace("/home");
     } catch (error) {
-      Alert.alert('Error', error.message)
+      Alert.alert("Error", error.message);
+    } finally {
+      setSubmitting(false);
     }
-    finally {
-      setIsSubmitting(false);
-    }
-  }
-
+  };
 
   return (
     <SafeAreaView className="bg-primary h-full">

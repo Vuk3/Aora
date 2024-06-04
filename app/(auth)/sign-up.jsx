@@ -1,39 +1,42 @@
-import { View, Text, ScrollView, Image, Alert } from 'react-native'
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { Link, router } from 'expo-router'
+import { useState } from "react";
+import { Link, router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
 
-import { images } from '../../constants'
+import { images } from "../../constants";
+import { createUser } from "../../lib/appwrite";
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
-import { createUser } from '../../lib/appwrite'
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const SignUp = () => {
+  const { setUser, setIsLogged } = useGlobalContext();
+
+  const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
-    username: '',
-    email: '',
-    password: ''
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false);
+    username: "",
+    email: "",
+    password: "",
+  });
 
   const submit = async () => {
-    if (!form.username || !form.email || !form.password) {
-      Alert.alert('Error', 'Please fill all the fields')
+    if (form.username === "" || form.email === "" || form.password === "") {
+      Alert.alert("Error", "Please fill in all fields");
     }
 
-    setIsSubmitting(true);
+    setSubmitting(true);
     try {
-      const result = await createUser(form.email, form.password, form.username)
-      createUser();
+      const result = await createUser(form.email, form.password, form.username);
+      setUser(result);
+      setIsLogged(true);
 
-      router.replace('/home')
+      router.replace("/home");
     } catch (error) {
-      Alert.alert('Error', error.message)
+      Alert.alert("Error", error.message);
+    } finally {
+      setSubmitting(false);
     }
-    finally {
-      setIsSubmitting(false);
-    }
-  }
+  };
 
 
   return (
