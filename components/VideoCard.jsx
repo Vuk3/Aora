@@ -32,9 +32,9 @@ const VideoCard = ({ video: { title, thumbnail, video, creator: { username, avat
       </View>
       {play ?
         (<Video
-          source={{ uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4" }}
+          // source={{ uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4" }}
           // hardkodirano, zato sto ovo dole sa item.video nece da se pokrenes
-          // source={{ uri: video }}
+          source={{ uri: video }}
 
           className="w-full h-60 rounded-xl mt-3"
           resizeMode={ResizeMode.CONTAIN}

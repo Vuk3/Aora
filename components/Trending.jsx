@@ -33,9 +33,9 @@ const TrendingItem = ({ activeItem, item }) => {
     >
       {play ?
         (<Video
-          source={{ uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4" }}
+          // source={{ uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4" }}
           // hardkodirano, zato sto ovo dole sa item.video nece da se pokrenes
-          // source={{ uri: item.video }}
+          source={{ uri: item.video }}
 
           className="w-52 h-72 rounded-[33px] mt-3 bg-white/10"
           resizeMode={ResizeMode.CONTAIN}
